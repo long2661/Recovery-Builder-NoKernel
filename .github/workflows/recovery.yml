@@ -50,24 +50,20 @@ jobs:
              mkdir work
              cd work
              repo init -u $MANIFEST -b $MANIFEST_BRANCH --depth=1 --groups=all,-notdefault,-device,-darwin,-x86,-mips
-             repo sync -j8 --force-sync
+             repo sync -j16 --force-sync
              git clone $DT_LINK --depth=1 --single-branch $DT_PATH
              
        - name: Build
          run: |
               cd work
-              . build/envsetup.sh &&lunch omni_$DEVICE-eng &&export ALLOW_MISSING_DEPENDENCIES=true && mka $TARGET
-              echo -e "Uploading the Built Recovery..."
-              curl --upload-file out/target/product/$DEVICE/$FOX_OUT_NAME.zip https://transfer.sh/$FOX_OUT_NAME.zip | tee &&  echo " "
-              echo -e "Recovery Uploaded Successfully... (See the URL Above :))"
-              echo -e "Done!"
+              . build/envsetup.sh &&lunch omni_$DEVICE-eng &&export ALLOW_MISSING_DEPENDENCIES=true && mka -j16 $TARGET
              
        - uses: actions/upload-artifact@v2
          with:
-          name: recoveryzip
-          path: work/out/target/product/*/*.zip
+          name: OrangeFox-R11.1-Stable-m20lte.zip
+          path: work/out/target/product/*/OrangeFox*.zip
 
        - uses: actions/upload-artifact@v2
          with:
-          name: recoveryimage
-          path: work/out/target/product/*/*.img
+          name: recovery.img
+          path: work/out/target/product/*/recovery.img
