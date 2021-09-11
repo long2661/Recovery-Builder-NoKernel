@@ -52,6 +52,16 @@ jobs:
              repo init -u $MANIFEST -b $MANIFEST_BRANCH --depth=1 --groups=all,-notdefault,-device,-darwin,-x86,-mips
              repo sync -j16 --force-sync
              git clone $DT_LINK --depth=1 --single-branch $DT_PATH
+             cd build
+             wget https://gitlab.com/OrangeFox/sync/-/raw/master/patch-manifest-fox_10.0.diff
+             patch -p1 < patch-manifest-fox_10.0.diff
+             cd -
+             rm -rf bootable/recovery
+             rm -rf vendor/recovery
+             git clone https://gitlab.com/OrangeFox/bootable/Recovery.git -b fox_10.0 bootable/recovery
+             git clone https://gitlab.com/OrangeFox/vendor/recovery.git -b fox_10.0 vendor/recovery
+             git clone https://github.com/TeamWin/android_device_qcom_common.git -b android-10 device/qcom/common
+             git clone https://github.com/TeamWin/android_device_qcom_twrp-common.git -b android-10 device/qcom/twrp-common
              
        - name: Build
          run: |
