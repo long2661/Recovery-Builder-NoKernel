@@ -14,7 +14,7 @@ on:
     types: [started]
 
 env:
-  MANIFEST: https://gitlab.com/OrangeFox/sync.git
+  MANIFEST: rsync://sources.orangefox.download/sources/fox_10.0 . --progress -a
   MANIFEST_BRANCH: fox_11.0
   DEVICE: x682c
   DT_LINK: https://github.com/SebaUbuntu-Recovery-Lab/android_device_infinix_Infinix-X682C
